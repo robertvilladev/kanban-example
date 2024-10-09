@@ -1,46 +1,45 @@
-import React, {useState} from 'react';
-import {Button, Container, Grid, Paper, TextField} from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import Panel from "./Panel";
-import {CardTypes, ItemTitleTypes, ItemTypes} from "../types";
+import { TaskStatus, Task, CardTypes, ItemTitleTypes } from "../types";
+import NewCard from "./NewCard";
 
-function Board({cards, saveCard}: {cards: CardTypes[], saveCard: (name: string) => void }) {
+const panels = [
+  {
+    title: ItemTitleTypes.NEW,
+    type: TaskStatus.NEW,
+    accept: [TaskStatus.IN_PROGRESS],
+  },
+  {
+    title: ItemTitleTypes.IN_PROGRESS,
+    type: TaskStatus.IN_PROGRESS,
+    accept: [TaskStatus.NEW],
+  },
+  {
+    title: ItemTitleTypes.FINISHED,
+    type: TaskStatus.COMPLETED,
+    accept: [TaskStatus.NEW, TaskStatus.IN_PROGRESS],
+  },
+];
 
-  const [name, setName] = useState<string>("")
-  const panels = [
-    {title: ItemTitleTypes.NEW, type: ItemTypes.NEW, accept: [ItemTypes.IN_PROGRESS]},
-    {title: ItemTitleTypes.IN_PROGRESS, type: ItemTypes.IN_PROGRESS, accept: [ItemTypes.NEW]},
-    {title: ItemTitleTypes.FINISHED, type: ItemTypes.FINISHED, accept: [ItemTypes.NEW, ItemTypes.IN_PROGRESS]},
-  ]
+interface BoardProps {
+  cards: CardTypes[];
+}
 
-  const onSaveCard = () => !!name && saveCard(name);
-
+function Board({ cards }: BoardProps) {
   return (
-    <Container maxWidth="xl" sx={{
-      paddingTop: 10,
-      backgroundColor: '#f5f5f7',
-      height: '100vh',
-    }}>
+    <Container
+      maxWidth="xl"
+      sx={{
+        paddingTop: 10,
+        backgroundColor: "#f5f5f7",
+        height: "100vh",
+      }}
+    >
       <Grid sx={{ flexGrow: 1 }} container spacing={2}>
         <Grid item xs={12}>
           <Grid container justifyContent="center" spacing={1}>
             <Grid key={0} item xs={2} sm={2} md={2}>
-              <Paper
-                sx={{
-                  height: '50vh',
-                  width: '100%',
-                  backgroundColor: (theme) =>
-                    theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-                }}
-              >
-                <TextField
-                  id="outlined-basic"
-                  label="Outlined"
-                  variant="outlined"
-                  onChange={(event) => setName(event.target.value)}
-                  style={{paddingBottom: 5}}
-                />
-                <Button variant="contained" onClick={onSaveCard}>Create Card</Button>
-              </Paper>
+              <NewCard />
             </Grid>
             {panels.map((value, index) => (
               <Grid key={`panel${index}`} item xs={3} sm={3} md={3}>
@@ -49,7 +48,6 @@ function Board({cards, saveCard}: {cards: CardTypes[], saveCard: (name: string) 
                   type={value.type}
                   cards={cards}
                   acceptTypes={value.accept}
-                  saveCard={saveCard}
                 />
               </Grid>
             ))}

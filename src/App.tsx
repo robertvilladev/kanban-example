@@ -1,62 +1,21 @@
-import React from 'react';
-import './App.css';
+import "./App.css";
 import Header from "./components/Header";
 import Board from "./components/Board";
-import {ItemTitleTypes, ItemTypes} from "./types";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import axios from "axios";
-import {Backdrop, CircularProgress, Dialog} from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
+import useGetTasksQuery from "./services/tasks/hooks/useGetTasksQuery";
 
 function App() {
-
-  const {data: cards, isLoading: loadingInitialData}: any = useQuery({
-    queryKey: ["panelData"],
-    queryFn: () =>
-      fetch('/todos').then(() =>(
-        [
-          {title: ItemTitleTypes.NEW, type: ItemTypes.NEW},
-          {title: ItemTitleTypes.IN_PROGRESS, type: ItemTypes.NEW},
-          {title: ItemTitleTypes.FINISHED, type: ItemTypes.NEW},
-        ])
-      ).catch(() =>
-        ([
-          {title: ItemTitleTypes.NEW, type: ItemTypes.NEW},
-          {title: ItemTitleTypes.IN_PROGRESS, type: ItemTypes.NEW},
-          {title: ItemTitleTypes.FINISHED, type: ItemTypes.NEW},
-        ])
-      ),
-  })
-
-  const queryClient = useQueryClient()
-  const {mutate: saveCard, isPending: loadingSaveData} = useMutation({
-    mutationFn: (name: string) => {
-      return axios.post('/todos', name)
-    },
-    onError: (data) => {
-      queryClient.setQueryData(["panelData"], [
-        {title: ItemTitleTypes.NEW, type: ItemTypes.IN_PROGRESS},
-        {title: ItemTitleTypes.IN_PROGRESS, type: ItemTypes.IN_PROGRESS},
-        {title: ItemTitleTypes.FINISHED, type: ItemTypes.FINISHED},
-      ])
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(['panelData'], [
-        {title: ItemTitleTypes.NEW, type: ItemTypes.IN_PROGRESS},
-        {title: ItemTitleTypes.IN_PROGRESS, type: ItemTypes.IN_PROGRESS},
-        {title: ItemTitleTypes.FINISHED, type: ItemTypes.FINISHED},
-      ])
-    },
-  })
+  const { data, isLoading: loadingInitialData } = useGetTasksQuery();
 
   return (
     <div className="App">
-      <Header/>
-      <Board cards={cards} saveCard={saveCard} />
+      <Header />
+      <Board cards={data} />
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingInitialData || loadingSaveData}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingInitialData}
       >
-        <CircularProgress color={"inherit"}/>
+        <CircularProgress color={"inherit"} />
       </Backdrop>
     </div>
   );
