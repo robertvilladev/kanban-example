@@ -7,12 +7,12 @@ const panels = [
   {
     title: ItemTitleTypes.NEW,
     type: TaskStatus.NEW,
-    accept: [TaskStatus.IN_PROGRESS],
+    accept: [TaskStatus.IN_PROGRESS, TaskStatus.COMPLETED],
   },
   {
     title: ItemTitleTypes.IN_PROGRESS,
     type: TaskStatus.IN_PROGRESS,
-    accept: [TaskStatus.NEW],
+    accept: [TaskStatus.NEW, TaskStatus.COMPLETED],
   },
   {
     title: ItemTitleTypes.FINISHED,
@@ -25,7 +25,7 @@ interface BoardProps {
   cards: CardTypes[];
 }
 
-function Board({ cards }: BoardProps) {
+const Board: React.FC<BoardProps> = ({ cards }) => {
   return (
     <Container
       maxWidth="xl"
@@ -43,7 +43,14 @@ function Board({ cards }: BoardProps) {
             </Grid>
 
             {panels.map((value, index) => (
-              <Grid key={`panel${index}`} item xs={3} sm={3} md={3}>
+              <Grid
+                key={`panel${index}`}
+                item
+                xs={3}
+                sm={3}
+                md={3}
+                sx={{ mx: 1 }}
+              >
                 <Panel
                   title={value.title}
                   type={value.type}
@@ -57,6 +64,6 @@ function Board({ cards }: BoardProps) {
       </Grid>
     </Container>
   );
-}
+};
 
 export default Board;

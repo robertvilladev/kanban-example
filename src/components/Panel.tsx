@@ -31,7 +31,7 @@ const Panel = ({
     <Paper
       ref={drop}
       sx={{
-        height: "50vh",
+        height: "80vh",
         width: "100%",
         backgroundColor: isOver ? "darkgray" : "white",
       }}
