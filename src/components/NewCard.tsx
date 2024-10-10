@@ -27,7 +27,7 @@ const NewCard = () => {
   return (
     <Paper
       sx={{
-        height: "50vh",
+        padding: 2,
         width: "100%",
         backgroundColor: (theme) =>
           theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -37,12 +37,14 @@ const NewCard = () => {
         id="outlined-basic"
         label="Outlined"
         variant="outlined"
+        value={name}
         onChange={(event) => setName(event.target.value)}
         style={{ paddingBottom: 1, fontSize: 12 }}
       />
       <Button
         variant="contained"
         onClick={onSaveCard}
+        style={{ margin: 6 }}
         disabled={loadingSaveData}
       >
         Create Card
