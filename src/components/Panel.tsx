@@ -16,8 +16,7 @@ const Panel = ({
   acceptTypes: string[];
   type: CardTypes["status"];
 }) => {
-  const { updateCardStatus, isPending: loadingSaveData } =
-    useUpdateStatusTaskMutation();
+  const { updateCardStatus } = useUpdateStatusTaskMutation();
 
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: acceptTypes,
@@ -44,7 +43,10 @@ const Panel = ({
         {title}
       </Typography>
 
-      {canDrop ? "Release to drop" : "Drag a box here"}
+      <Typography variant="caption" sx={{ textAlign: "center", padding: 2 }}>
+        {canDrop ? "Release to drop" : "Drag a card here"}
+      </Typography>
+
       {!!cards &&
         cards.map((card, index: number) =>
           card.status === type ? (

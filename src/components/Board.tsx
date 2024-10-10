@@ -1,6 +1,6 @@
 import { Container, Grid } from "@mui/material";
 import Panel from "./Panel";
-import { TaskStatus, Task, CardTypes, ItemTitleTypes } from "../types";
+import { TaskStatus, CardTypes, ItemTitleTypes } from "../types";
 import NewCard from "./NewCard";
 
 const panels = [
@@ -41,6 +41,7 @@ function Board({ cards }: BoardProps) {
             <Grid key={0} item xs={2} sm={2} md={2}>
               <NewCard />
             </Grid>
+
             {panels.map((value, index) => (
               <Grid key={`panel${index}`} item xs={3} sm={3} md={3}>
                 <Panel

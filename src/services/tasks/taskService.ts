@@ -1,5 +1,6 @@
 import { BaseQueryResponse, Task, TaskStatus } from "../../types";
 import { BASE_API_URL } from "./consts";
+import { mapTaskModelToCard } from "./mappers";
 
 export const getTasks = async (): Promise<BaseQueryResponse<Task[]>> => {
   const response = await fetch(`${BASE_API_URL}/tasks`);
@@ -12,7 +13,7 @@ export const getTask = async (id: string): Promise<Task> => {
   if (!response.ok) 
     throw new Error(data.message);
 
-  return data.response
+  return mapTaskModelToCard(data.response)
 };
 
 export const createTask = async (
@@ -25,6 +26,7 @@ export const createTask = async (
     },
     body: JSON.stringify(task),
   });
+  
   return response.json();
 };
 
@@ -62,7 +64,7 @@ export const updateTaskStatus = async ({
     updatedTask
   );
 
-  const response = await fetch(`${BASE_API_URL}/tasks/${task.id}`, {
+  const response = await fetch(`${BASE_API_URL}/tasks/${task.id}/status`, {
     method: "PATCH",
     headers: {
       "Content-type": "application/json",
