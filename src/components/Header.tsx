@@ -1,5 +1,5 @@
-import React from 'react';
-import {AppBar, Toolbar, Typography} from "@mui/material";
+import React from "react";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 
 function Header() {
   return (
@@ -7,7 +7,7 @@ function Header() {
       <AppBar position="static">
         <Toolbar variant="dense">
           <Typography variant="h6" color="inherit" component="div">
-            Kanban Example
+            Kanban Board Example
           </Typography>
         </Toolbar>
       </AppBar>
